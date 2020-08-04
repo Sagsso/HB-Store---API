@@ -8,6 +8,12 @@ import {createConnection,} from 'typeorm';
 import userRoutes from './routes/user.routes';
 
 const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => {
+    res.send('Hermosa Bendición - TIENDA DE ACCESORIOS')
+})
+
 createConnection();
 
 //MIDDLEWARES
@@ -18,5 +24,5 @@ app.use(express.json());
 //ROUTES
 app.use(userRoutes);
 
-app.listen(3000);
-console.log('Server on port', 3000);
+app.listen(port);
+console.log('Server on port', port);
