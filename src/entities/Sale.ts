@@ -8,7 +8,7 @@ export class Sale {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('datetime')
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     saleDate: Date;
 
     @Column()

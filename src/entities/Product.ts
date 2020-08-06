@@ -10,7 +10,7 @@ export class Product {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ nullable: true})
     description: string;
 
     @Column()
@@ -22,7 +22,7 @@ export class Product {
     @Column()
     inventory: number;
 
-    @Column('datetime')
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
     @OneToMany(type => SaleDetail, saleDetail => saleDetail.product)

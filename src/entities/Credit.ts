@@ -1,12 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { Sale } from "./Sale";
+import { PayOut } from "./PayOut";
 
 @Entity()
 export class Credit {
-    @PrimaryGeneratedColumn()
+    
+    @PrimaryGeneratedColumn()       
     id: number;
 
-    @OneToOne(type => Sale)
+    @OneToOne(type => Sale, { nullable: false })
     @JoinColumn()
     sale: Sale;
 
@@ -15,5 +17,8 @@ export class Credit {
 
     @Column()
     isActive: boolean;
+
+    @OneToMany(type => PayOut, payout => payout.credit)
+    payouts: PayOut[];
 
 }
