@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import { SaleDetail } from '../entities/SaleDetail';
 
 export const getSaleDetails = async (req: Request, res: Response): Promise<Response> => {
-    const saleDetails = await getRepository(SaleDetail).find();
+    const saleDetails = await getRepository(SaleDetail).find({relations: ["sale", "product"]});
     return res.json(saleDetails);
 }
 

@@ -9,12 +9,6 @@ export class SaleDetail {
     id: number;
 
     @Column()
-    saleId: number;
-
-    @Column()
-    productId: number;
-
-    @Column()
     quantity: number;
 
     @Column()

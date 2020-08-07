@@ -15,7 +15,7 @@ export class Credit {
     @Column()
     ammount: number;
 
-    @Column()
+    @Column({default: true})
     isActive: boolean;
 
     @OneToMany(type => PayOut, payout => payout.credit)

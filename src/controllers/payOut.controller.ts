@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { PayOut } from '../entities/PayOut';
+import { Credit } from '../entities/Credit';
 
 export const getPayOuts = async (req: Request, res: Response): Promise<Response> => {
     const payOuts = await getRepository(PayOut).find({ relations: ["credit"] });
@@ -13,9 +14,23 @@ export const getPayOut = async (req: Request, res: Response): Promise<Response> 
 }
 
 export const createPayOut = async (req: Request, res: Response): Promise<Response> => {
-    const newPayOut = getRepository(PayOut).create(req.body);
+
+    //Create PayOut
+    const newPayOut = new PayOut();
+    newPayOut.credit = req.body.credit;
+    newPayOut.payOut = req.body.payOut;
     const results = await getRepository(PayOut).save(newPayOut);
+
+    //Disccount PayOut from credit
+    const credit = await getRepository(Credit).findOne(req.body.credit);
+    if(credit) {
+        credit.ammount -= newPayOut.payOut;
+        credit.ammount == 0 ? credit.isActive = false : credit.isActive = true;
+        await getRepository(Credit).save(credit);
+    }
+
     return res.json(results);
+    
 }
 
 export const updatePayOut = async (req: Request, res: Response): Promise<Response> => {
