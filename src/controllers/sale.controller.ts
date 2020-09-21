@@ -15,6 +15,68 @@ export const getSale = async (req: Request, res: Response): Promise<Response> =>
     return res.json(results);
 }
 
+export const getSalesByMonth = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const result = await getRepository(Sale)
+            .createQueryBuilder("sale")
+            .where("Month(saleDate) = :month", { month: +req.params.month })
+            .getMany();
+            return res.json(result);
+        
+    } catch (error) {
+        console.log(error);
+        
+        return res.json({error: true, msg: error})
+    }
+}
+export const getSalesByDay = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const result = await getRepository(Sale)
+            .createQueryBuilder("sale")
+            .where("Month(saleDate) = :month AND Day(saleDate) = :day AND Year(saleDate) = :year",
+            { month: +req.params.month, day: +req.params.day, year: +req.params.year })
+            .getMany();
+            return res.json(result);
+        
+    } catch (error) {
+        console.log(error);
+        
+        return res.json({error: true, msg: error})
+    }
+}
+export const getAmmountByDay = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const result = await getRepository(Sale)
+            .createQueryBuilder("sale")
+            .select("SUM(price)", "sum")
+            .where("Month(saleDate) = :month AND Day(saleDate) = :day AND Year(saleDate) = :year",
+            { month: +req.params.month, day: +req.params.day, year: +req.params.year })
+            .getRawOne();
+            return res.json(result);
+        
+    } catch (error) {
+        console.log(error);
+        
+        return res.json({error: true, msg: error})
+    }
+}
+
+export const getAmmountByMonth = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const result = await getRepository(Sale)
+            .createQueryBuilder("sale")
+            .select("SUM(price)", "sum")
+            .where("Month(saleDate) = :month", { month: +req.params.month  })
+            .getRawOne();
+            return res.json(result);
+        
+    } catch (error) {
+        console.log(error);
+        
+        return res.json({error: true, msg: error})
+    }
+}
+
 export const createSale = async (req: Request, res: Response) => {
     
     const newSale = new Sale();
