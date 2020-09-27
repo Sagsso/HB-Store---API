@@ -100,7 +100,7 @@ export const createSale = async (req: Request, res: Response) => {
                             newSaleDetail.price = dbProduct.priceOut;
                             newSaleDetail.sale = newSale;
                             newSaleDetail.product = dbProduct;
-                            dbProduct.inventory = product.quantity;
+                            dbProduct.inventory -= product.quantity;
                             await getRepository(SaleDetail).save(newSaleDetail);
                             await getRepository(Product).save(dbProduct);
                         }
