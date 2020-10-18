@@ -33,6 +33,8 @@ export const getSalesByDay = async (req: Request, res: Response): Promise<Respon
     try {
         const result = await getRepository(Sale)
             .createQueryBuilder("sale")
+            .leftJoinAndSelect("sale.saleDetails", "saleDetail")
+            .leftJoinAndSelect("saleDetail.product", "product")
             .where("Month(saleDate) = :month AND Day(saleDate) = :day AND Year(saleDate) = :year",
             { month: +req.params.month, day: +req.params.day, year: +req.params.year })
             .getMany();
@@ -46,13 +48,13 @@ export const getSalesByDay = async (req: Request, res: Response): Promise<Respon
 }
 export const getAmmountByDay = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const result = await getRepository(Sale)
+        const {sum} = await getRepository(Sale)
             .createQueryBuilder("sale")
             .select("SUM(price)", "sum")
             .where("Month(saleDate) = :month AND Day(saleDate) = :day AND Year(saleDate) = :year",
             { month: +req.params.month, day: +req.params.day, year: +req.params.year })
             .getRawOne();
-            return res.json(result);
+            return res.json(sum);
         
     } catch (error) {
         console.log(error);
