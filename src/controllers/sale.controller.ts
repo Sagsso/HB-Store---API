@@ -143,7 +143,7 @@ export const updateSale = async (req: Request, res: Response): Promise<Response>
         return res.json(results);
     }
 
-    return res.status(404).json({ msg: 'Not Sale found' });
+    return res.status(404).json({ msg: 'Sale not found' });
 }
 
 export const deleteSale = async (req: Request, res: Response): Promise<Response> => {

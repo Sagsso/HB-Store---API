@@ -4,7 +4,7 @@
     "port": 3306,
     "username": "root",
     "password": "",
-    "database": "hb_db",
+    "database": "hb",
     "entities": ["dist/entities/**/*.js"],
     "synchronize": true
 }
